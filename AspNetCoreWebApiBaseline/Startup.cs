@@ -34,6 +34,9 @@ namespace AspNetCoreWebApiBaseline
 
             // Needed for NLog.Web
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // Add MVC framework services.
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,10 +60,11 @@ namespace AspNetCoreWebApiBaseline
                 app.UseStatusCodePages();
             }
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
+            // Support loading static files
+            app.UseStaticFiles();
+
+            // Use default MVC routing rules
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
