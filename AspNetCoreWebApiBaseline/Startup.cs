@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
+using NLog.Web;
 
 namespace AspNetCoreWebApiBaseline
 {
@@ -17,8 +19,18 @@ namespace AspNetCoreWebApiBaseline
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            // Add various loggers
             loggerFactory.AddConsole();
 
+            loggerFactory.AddDebug();
+
+            // Add NLog to .NET Core
+            loggerFactory.AddNLog();
+
+            // Enable ASP.NET Core features (NLog.web)
+            app.AddNLogWeb();
+
+            // Configure developer exception handling
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
